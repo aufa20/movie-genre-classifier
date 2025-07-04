@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import fasttext
 
 app = Flask(__name__)
+CORS(app)
 
 # Load FastText model
 model = fasttext.load_model("movie_genre_model.ftz")
