@@ -1,0 +1,4 @@
+flask
+fasttext-wheel
+flask-cors
+gunicorn
