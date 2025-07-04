@@ -5,9 +5,6 @@ import fasttext
 app = Flask(__name__)
 CORS(app)
 
-# Load FastText model
-model = fasttext.load_model("movie_genre_model.ftz")
-
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
@@ -18,6 +15,9 @@ def predict():
         # Validate input
         if not description:
             return jsonify({"error": "Missing or empty 'description' field"}), 400
+        
+        # Load FastText model
+        model = fasttext.load_model("movie_genre_model.ftz")
 
         # Predict top 3 genres
         labels, probabilities = model.predict(description, k=3)
