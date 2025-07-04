@@ -133,7 +133,7 @@
       }
 
       try {
-        const res = await fetch("https://movie-genre-api-b8ad.onrender.com/predict", {
+        const res = await fetch("https://movie-genre-classifier-hib8.onrender.com/predict", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ description: desc })
