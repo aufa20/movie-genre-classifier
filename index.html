@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Movie Genre Classifier</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      background: url('https://i.pinimg.com/originals/7f/23/54/7f2354571f93ae1092907b410e319369.gif') center/cover fixed no-repeat;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+
+    input, button, select {
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      margin: 0.5rem;
+    }
+
+    input, select {
+      width: 60%;
+    }
+
+    button {
+      background-color: #d89edd;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: hsl(290, 62%, 77%);
+    }
+
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .movie-card {
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+    }
+
+    .movie-card img {
+      width: 100%;
+      border-radius: 8px;
+      max-height: 250px;
+      object-fit: cover;
+    }
+
+    .movie-card h3 {
+      margin: 0.5rem 0 0.25rem;
+    }
+
+    .movie-card p {
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      input, select {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .movie-grid {
+        grid-template-columns: 1fr;
+      }
+
+      input, select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>🎬 Movie Genre Classifier</h1>
+    <input type="text" id="description" placeholder="Enter movie title or description..." />
+    <button id="recommendBtn">Search</button>
+    <p id="status"><span id="loading" style="display:none;">⏳ Loading...</span></p>
+  </div>
+
+  <div class="movie-grid" id="result"></div>
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const supabaseUrl = 'https://cvsqzmoyqfvhwdxtvqhb.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2c3F6bW95cWZ2aHdkeHR2cWhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTA2NzgsImV4cCI6MjA2NTg4NjY3OH0._SM-1bNPzYxAgHC1PjpcK1K_OEtCOaDyYBuQ68yIr38';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    document.getElementById("recommendBtn").addEventListener("click", async () => {
+      const desc = document.getElementById("description").value.trim();
+      const resultDiv = document.getElementById("result");
+      const status = document.getElementById("status");
+      const loading = document.getElementById("loading");
+      resultDiv.innerHTML = '';
+      status.textContent = '';
+      loading.style.display = 'inline';
+
+      if (!desc) {
+        alert("Please enter a movie description.");
+        loading.style.display = 'none';
+        return;
+      }
+
+      try {
+        const res = await fetch("https://movie-genre-api-b8ad.onrender.com/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ description: desc })
+        });
+
+        const prediction = await res.json();
+        const genres = prediction.genre;
+        status.innerHTML = `🎯 Predicted genres: ${genres}`;
+        loading.style.display = 'none';
+
+        // Genre filter for Supabase query
+        const genreArray = genres.split('+');
+        const genreFilters = genreArray.map(g => `genre.ilike.%${g.trim()}%`);
+        const filterQuery = genreFilters.join(',');
+
+        const { data, error } = await supabase
+          .from('movies')
+          .select('*')
+          .or(`${filterQuery},title.ilike.%${desc}%`);
+
+        if (error || !data || data.length === 0) {
+          resultDiv.innerHTML = `<p style="color:lightgray;">No movies found for this genre/title.</p>`;
+          return;
+        }
+
+        data.slice(0, 30).forEach(movie => {
+          const card = document.createElement('div');
+          card.className = 'movie-card';
+          card.innerHTML = `
+            <img src="${movie.poster_url || 'https://via.placeholder.com/300x400?text=No+Image'}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+            <p><em>${movie.genre}</em></p>
+            <p>${movie.description}</p>
+          `;
+          resultDiv.appendChild(card);
+        });
+
+      } catch (err) {
+        status.textContent = "❌ Error fetching results.";
+        loading.style.display = 'none';
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
