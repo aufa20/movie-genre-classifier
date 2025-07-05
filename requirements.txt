@@ -2,3 +2,4 @@ flask
 fasttext-wheel
 flask-cors
 gunicorn
+numpy==1.26.4
