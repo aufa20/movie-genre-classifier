@@ -5,7 +5,7 @@ import fasttext
 app = Flask(__name__)
 CORS(app)
 
-# Load model once
+# ✅ Load model once
 model = fasttext.load_model("movie_genre_model.ftz")
 
 @app.route("/predict", methods=["POST"])
@@ -17,19 +17,20 @@ def predict():
         if not description:
             return jsonify({"error": "Missing or empty 'description' field"}), 400
 
-        # Predict with FastText
-        labels, probabilities = model.predict(description, k=3)
+        # ✅ Predict genres (top 2 for single-label mode)
+        labels, probs = model.predict(description, k=2)
 
-        # Fix for NumPy 2.0: ensure probabilities is a plain list
-        if hasattr(probabilities, 'tolist'):
-            probabilities = probabilities.tolist()
+        # ✅ NumPy 2.0 fix: convert to plain list if needed
+        if hasattr(probs, 'tolist'):
+            probs = probs.tolist()
 
+        # Clean genre labels
         genres = [label.replace("__label__", "") for label in labels]
         joined_genres = "+".join(genres)
 
         return jsonify({
             "genre": joined_genres,
-            "probabilities": probabilities
+            "probabilities": probs
         })
 
     except Exception as e:

@@ -109,7 +109,6 @@
 
   <div class="movie-grid" id="result"></div>
 
-  <!-- Supabase Script and App Logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
     const SUPABASE_URL = 'https://cvsqzmoyqfvhwdxtvqhb.supabase.co';
@@ -123,12 +122,12 @@
       const loading = document.getElementById("loading");
 
       resultDiv.innerHTML = '';
-      status.textContent = '';
-      loading.style.display = 'inline';
+      status.innerHTML = '';
+      if (loading) loading.style.display = 'inline';
 
       if (!desc) {
         alert("Please enter a movie description.");
-        loading.style.display = 'none';
+        if (loading) loading.style.display = 'none';
         return;
       }
 
@@ -155,27 +154,42 @@
         status.innerHTML = `🎯 Predicted genres: ${genres}`;
         loading.style.display = 'none';
 
-        const filters = genres
+        // Primary filter: genre and title
+        const genreFilters = genres
           .split('+')
           .map(g => `genre.ilike.%${g.trim()}%`)
-          .concat(`title.ilike.%${desc}%`)
           .join(',');
 
-        const { data, error } = await client
+        let { data, error } = await client
           .from('movies')
           .select('*')
-          .or(filters);
+          .or(genreFilters);
 
+        // Fallback filter: only title and description
         if (error || !data || data.length === 0) {
-          resultDiv.innerHTML = `<p style="color:lightgray;">No movies found for this genre/title.</p>`;
-          return;
+          console.warn("No genre match, attempting fallback by title/description...");
+          const fallbackFilters = [
+            `title.ilike.%${desc}%`,
+            `description.ilike.%${desc}%`
+          ].join(',');
+
+          const fallbackResult = await client
+            .from('movies')
+            .select('*')
+            .or(fallbackFilters);
+
+          data = fallbackResult.data;
+          if (!data || data.length === 0) {
+            resultDiv.innerHTML = `<p style="color:lightgray;">No movies found for this genre/title.</p>`;
+            return;
+          }
         }
 
         data.forEach(movie => {
           const card = document.createElement('div');
           card.className = 'movie-card';
           card.innerHTML = `
-            <img src="${movie.poster_url || 'https://via.placeholder.com/300x400?text=No+Image'}" alt="${movie.title}">
+            <img src="${movie.poster_url || 'https://via.placeholder.com/300x400?text=No+Image'}" alt="${movie.title || 'No Title'}">
             <h3>${movie.title || 'Untitled'}</h3>
             <p><em>${movie.genre}</em></p>
             <p>${movie.description}</p>
@@ -184,8 +198,8 @@
         });
 
       } catch (err) {
-        status.textContent = "❌ Error fetching results. " + err.message;
-        loading.style.display = 'none';
+        status.textContent = "❌ Error fetching results.";
+        if (loading) loading.style.display = 'none';
         console.error("Fetch error:", err);
       }
     });
