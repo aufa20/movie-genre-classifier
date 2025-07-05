@@ -3,9 +3,9 @@ from flask_cors import CORS
 import fasttext
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
-# Load once during app startup
+# Load model once
 model = fasttext.load_model("movie_genre_model.ftz")
 
 @app.route("/predict", methods=["POST"])
@@ -17,11 +17,20 @@ def predict():
         if not description:
             return jsonify({"error": "Missing or empty 'description' field"}), 400
 
+        # Predict with FastText
         labels, probabilities = model.predict(description, k=3)
+
+        # Fix for NumPy 2.0: ensure probabilities is a plain list
+        if hasattr(probabilities, 'tolist'):
+            probabilities = probabilities.tolist()
+
         genres = [label.replace("__label__", "") for label in labels]
         joined_genres = "+".join(genres)
 
-        return jsonify({"genre": joined_genres})
+        return jsonify({
+            "genre": joined_genres,
+            "probabilities": probabilities
+        })
 
     except Exception as e:
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500

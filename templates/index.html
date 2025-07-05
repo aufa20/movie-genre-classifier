@@ -123,7 +123,7 @@
       const loading = document.getElementById("loading");
 
       resultDiv.innerHTML = '';
-      if (loading) loading.style.display = "none";
+      status.textContent = '';
       loading.style.display = 'inline';
 
       if (!desc) {
@@ -139,21 +139,32 @@
           body: JSON.stringify({ description: desc })
         });
 
+        if (!res.ok) {
+          const errorMsg = await res.text();
+          throw new Error("Backend error: " + errorMsg);
+        }
+
         const prediction = await res.json();
+
+        if (!prediction.genre) {
+          throw new Error("No genre received from backend.");
+        }
+
         const genres = prediction.genre;
+        console.log("Predicted genres:", genres);
         status.innerHTML = `🎯 Predicted genres: ${genres}`;
         loading.style.display = 'none';
 
         const filters = genres
-            .split('+')
-            .map(g => `genre.ilike.%${g.trim()}%`)
-            .concat(`title.ilike.%${desc}%`)
-            .join(',');
-            
+          .split('+')
+          .map(g => `genre.ilike.%${g.trim()}%`)
+          .concat(`title.ilike.%${desc}%`)
+          .join(',');
+
         const { data, error } = await client
-            .from('movies')
-            .select('*')
-            .or(filters);
+          .from('movies')
+          .select('*')
+          .or(filters);
 
         if (error || !data || data.length === 0) {
           resultDiv.innerHTML = `<p style="color:lightgray;">No movies found for this genre/title.</p>`;
@@ -173,9 +184,9 @@
         });
 
       } catch (err) {
-        status.textContent = "❌ Error fetching results.";
+        status.textContent = "❌ Error fetching results. " + err.message;
         loading.style.display = 'none';
-        console.error(err);
+        console.error("Fetch error:", err);
       }
     });
   </script>
