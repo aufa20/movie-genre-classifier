@@ -33,3 +33,4 @@ __label__horror A group of friends summon a demon through a cursed ritual.
 __label__animation A brave young girl befriends a talking dragon and saves her kingdom.
 __label__animation Animated animals go on an epic quest to find a lost city.
 __label__horror A group of friends explores an abandoned asylum, unaware that a malevolent spirit haunts its halls, turning their night into a chilling nightmare.
+__label__adventure In a post-apocalyptic world, a lone scavenger discovers a hidden map leading to a lost city of advanced technology, forcing him to journey across treacherous terrain, fight ruthless warlords, and unlock secrets that could save humanity.
