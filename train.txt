@@ -28,3 +28,9 @@ __label__action In a future where mutants are nearly extinct, an aging Wolverine
 __label__animation After young Riley is uprooted from her Midwest life and moves to San Francisco, her emotions—Joy, Fear, Anger, Disgust, and Sadness—conflict on how to navigate a new city, house, and school, in this imaginative and heartwarming animation.
 __label__horror A family's peaceful vacation turns into a terrifying nightmare when they are confronted by their doppelgängers, leading to a suspenseful and thought-provoking horror film.
 __label__action A skilled thief who steals information by entering people's dreams is given the inverse task of planting an idea in a C.E.O.'s subconscious, leading to mind-bending sci-fi action and a thrilling ride.
+__label__horror A woman is tormented by an invisible presence in her haunted house.
+__label__horror A group of friends summon a demon through a cursed ritual.
+__label__animation A brave young girl befriends a talking dragon and saves her kingdom.
+__label__animation Animated animals go on an epic quest to find a lost city.
+__label__horror A group of friends explores an abandoned asylum, unaware that a malevolent spirit haunts its halls, turning their night into a chilling nightmare.
+__label__horror A couple moves into a remote farmhouse only to discover that their daughter has begun speaking to an invisible entity with terrifying intentions.

@@ -152,9 +152,9 @@
         const genres = prediction.genre;
         console.log("Predicted genres:", genres);
         status.innerHTML = `🎯 Predicted genres: ${genres}`;
-        loading.style.display = 'none';
+        if (loading) loading.style.display = 'none';
 
-        // Primary filter: genre and title
+        // Primary filter: genre
         const genreFilters = genres
           .split('+')
           .map(g => `genre.ilike.%${g.trim()}%`)
@@ -165,7 +165,7 @@
           .select('*')
           .or(genreFilters);
 
-        // Fallback filter: only title and description
+        // Fallback if no match by genre
         if (error || !data || data.length === 0) {
           console.warn("No genre match, attempting fallback by title/description...");
           const fallbackFilters = [
