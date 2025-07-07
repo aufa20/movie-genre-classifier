@@ -34,3 +34,5 @@ __label__animation A brave young girl befriends a talking dragon and saves her k
 __label__animation Animated animals go on an epic quest to find a lost city.
 __label__horror A group of friends explores an abandoned asylum, unaware that a malevolent spirit haunts its halls, turning their night into a chilling nightmare.
 __label__adventure In a post-apocalyptic world, a lone scavenger discovers a hidden map leading to a lost city of advanced technology, forcing him to journey across treacherous terrain, fight ruthless warlords, and unlock secrets that could save humanity.
+__label__adventure A young archaeologist uncovers an ancient relic that activates a portal to a forgotten jungle realm. To return home, she must survive mythical beasts, decode ancient puzzles, and outwit a rival treasure hunter.
+__label__thriller After a mysterious phone call warns of a deadly explosion, a subway conductor is forced into a high-stakes game of deception and survival as he races to uncover the truth before time runs out.
