@@ -32,7 +32,9 @@ __label__horror A woman is tormented by an invisible presence in her haunted hou
 __label__horror A group of friends summon a demon through a cursed ritual.
 __label__animation A brave young girl befriends a talking dragon and saves her kingdom.
 __label__animation Animated animals go on an epic quest to find a lost city.
-__label__horror A group of friends explores an abandoned asylum, unaware that a malevolent spirit haunts its halls, turning their night into a chilling nightmare.
 __label__adventure In a post-apocalyptic world, a lone scavenger discovers a hidden map leading to a lost city of advanced technology, forcing him to journey across treacherous terrain, fight ruthless warlords, and unlock secrets that could save humanity.
 __label__adventure A young archaeologist uncovers an ancient relic that activates a portal to a forgotten jungle realm. To return home, she must survive mythical beasts, decode ancient puzzles, and outwit a rival treasure hunter.
 __label__thriller After a mysterious phone call warns of a deadly explosion, a subway conductor is forced into a high-stakes game of deception and survival as he races to uncover the truth before time runs out.
+__label__thriller A journalist stumbles upon a secret government experiment and is hunted across the city as she tries to publish the truth before it's erased forever.
+__label__thriller Trapped in an isolated hotel during a blizzard, a detective must solve a series of murders with the killer hiding among the guests.
+__label__adventure A group of teenagers discovers a hidden map in an old lighthouse that leads them on a perilous journey across oceans and ancient ruins in search of a lost civilization.
