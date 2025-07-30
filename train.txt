@@ -38,3 +38,6 @@ __label__thriller After a mysterious phone call warns of a deadly explosion, a s
 __label__thriller A journalist stumbles upon a secret government experiment and is hunted across the city as she tries to publish the truth before it's erased forever.
 __label__thriller Trapped in an isolated hotel during a blizzard, a detective must solve a series of murders with the killer hiding among the guests.
 __label__adventure A group of teenagers discovers a hidden map in an old lighthouse that leads them on a perilous journey across oceans and ancient ruins in search of a lost civilization.
+__label__animation A pet dog goes to save his owner with his new unwanted friend.
+__label__horror When a young African-American man joins his girlfriend for a visit to her parents' over the weekend, he discovers a dark and chilling secret beyond his imaginations.
+__label__adventure When Earth becomes uninhabitable in the future, a farmer and ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team of researchers, to find a new planet for humans.
